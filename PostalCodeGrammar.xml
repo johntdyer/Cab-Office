@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://www.w3.org/2001/06/grammar" xml:lang="en-UK" root="TOPLEVEL">
+	<rule id="TOPLEVEL" scope="public">
+		<one-of>
+			<item>
+				<one-of>
+					<!-- MATCHED ONE OR TWO LETTERS AND 1 DIGIT -->
+					<item>
+						<tag> out.prefix="";</tag>
+						<item repeat="1-2">
+							<ruleref uri="#CARDINAL_PROPER"/>
+							<tag>out.prefix = out.prefix + rules.CARDINAL_PROPER.prefix;</tag>
+						</item>
+						<item>
+							<ruleref uri="#NUMBERS_ASR"/>
+							<tag>out.suffix=rules.NUMBERS_ASR.suffix;</tag>
+						</item>
+					</item>
+				</one-of>
+			</item>
+			<!-- MATCHED CARDINAL -->
+			<item>
+				<tag> out.prefix="";</tag>
+				<item repeat="1-2">
+					<ruleref uri="#CARDINAL_PROPER"/>
+					<tag>out.prefix = out.prefix + rules.CARDINAL_PROPER.prefix;</tag>
+				</item>
+			</item>
+			<!-- END MATCHED CARDINAL -->
+			<!-- MATCHED NUMBER -->
+			<item>
+				<ruleref uri="#NUMBERS_ASR"/>
+				<tag>out.suffix=rules.NUMBERS_ASR.suffix;</tag>
+			</item>
+			<!-- END MATCHED NUMBER -->
+		</one-of>
+	</rule>
+	<rule id="CARDINAL_PROPER">
+		<one-of>
+			<item>
+				<one-of>
+					<item>n </item>
+					<item>en </item>
+					<item>north </item>
+					<item>northern </item>
+				</one-of>
+				<tag>out.prefix = "N";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item>e </item>
+					<item>eee </item>
+					<item>eeh </item>
+					<item>east </item>
+					<item>eastern </item>
+				</one-of>
+				<tag>out.prefix = "E";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item>W </item>
+					<item>west </item>
+					<item>western</item>
+					<item>double u</item>
+					<item>double you </item>
+				</one-of>
+				<tag>out.prefix = "W";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item> s</item>
+					<item> ess </item>
+					<item> ese </item>
+					<item>south </item>
+					<item>southern</item>
+				</one-of>
+				<tag>out.prefix = "S";</tag>
+			</item>
+			
+			<item>
+				<one-of>
+					<item> c</item>
+					<item> sea </item>
+					<item> see </item>
+				</one-of>
+
+				<tag>out.prefix = "C";</tag>
+			</item>
+			
+			
+			
+			<!-- To Add a letter you will want to copy this section -->
+			
+			<!--
+			
+			<item>
+				<one-of>
+					<item> s</item>
+					<item> ess </item>
+					<item> ese </item>
+					<item>south </item>
+					<item>southern</item>
+				</one-of>
+			
+				<tag>out.prefix = "S";</tag>
+			</item>
+			
+			-->
+		</one-of>
+	</rule>
+	<rule id="NUMBERS_ASR">
+		<one-of>
+			<item>zero <tag>out.suffix = "0";</tag></item>
+			<item>one <tag>out.suffix = "1";</tag></item>
+			<item>two <tag>out.suffix = "2";</tag></item>
+			<item>three <tag>out.suffix = "3";</tag></item>
+			<item>four <tag>out.suffix = "4";</tag></item>
+			<item>five <tag>out.suffix = "5";</tag></item>
+			<item>six <tag>out.suffix = "6";</tag></item>
+			<item>seven <tag>out.suffix = "7";</tag></item>
+			<item>eight <tag>out.suffix = "8";</tag></item>
+			<item>nine <tag>out.suffix = "9";</tag></item>
+			<item>ten <tag>out.suffix = "10";</tag></item>
+			<item>eleven <tag>out.suffix = "11";</tag></item>
+			<item>twelve <tag>out.suffix = "12";</tag></item>
+			<item>thirteen <tag>out.suffix = "13";</tag></item>
+			<item>fourteen <tag>out.suffix = "14";</tag></item>
+			<item>fifteen <tag>out.suffix = "15";</tag></item>
+			<item>sixteen <tag>out.suffix = "16";</tag></item>
+			<item>seventeen <tag>out.suffix = "17";</tag></item>
+			<item>eighteen <tag>out.suffix = "18";</tag></item>
+			<item>nineteen <tag>out.suffix = "19";</tag></item>
+			<item>twenty <tag>out.suffix = "20";</tag></item>
+			<item>twenty one<tag>out.suffix = "22";</tag></item>
+			<item>twenty two<tag>out.suffix = "22";</tag></item>
+			<item>twenty three  <tag>out.suffix = "23";</tag></item>
+			<item>twenty four  <tag>out.suffix = "24";</tag></item>
+			<item>twenty five<tag>out.suffix = "25";</tag></item>
+			<item>twenty six <tag>out.suffix = "26";</tag></item>
+			<item>twenty seven<tag>out.suffix = "27";</tag></item>
+			<item>twenty eight<tag>out.suffix = "28";</tag></item>
+		</one-of>
+	</rule>
+</grammar>

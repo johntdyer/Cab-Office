@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="root.xml" version="2.1">
+
+	<!--
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Welcome Form 
+Plays welcome message
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ -->
+	<form id="initial">
+		<block>
+			<assign name="choiceVariable" expr="session.connection.ccxml.values.choiceVariable"/>
+			<!-- 	@@@@@@@		London		@@@@@@ -->
+			<if cond="choiceVariable=='london'">
+				<assign name="grammarLocatorVariable" expr="'PostalCodeGrammar.xml'"/>
+				<assign name="audioBaseVariable" expr="'/londonAudioFiles/'"/>
+				<assign name="numberLocatorPHPScript" expr="'fetchNumbers.php'"/>
+				<!-- Log Data -->
+				<log expr="'@@@@@@ choiceVariable: ' + choiceVariable "/>
+				<log expr="'@@@@@@ audioBaseVariable: ' + audioBaseVariable "/>
+				<log expr="'@@@@@@ numberLocatorPHPScript: ' + numberLocatorPHPScript "/>
+				<log expr="'@@@@@@ grammarLocatorVariable: ' + grammarLocatorVariable "/>
+					<!--
+					TEST DATA
+					<assign name="confirmedDataVariable" expr="'e1'"/>
+					<goto next="#submitData"/>
+					-->
+				<goto next="#frm_welcome"/>
+				<!-- 	@@@@@@@		LEEDS		@@@@@@ -->
+				<elseif cond="choiceVariable=='leeds'"/>
+				<assign name="grammarLocatorVariable" expr="'PostalCodeGrammar.xml'"/>
+				<assign name="audioBaseVariable" expr="'/leedsAudioFiles/'"/>
+				<assign name="numberLocatorPHPScript" expr="'fetchNumbers.php'"/>
+					<!-- Log Data -->
+				<log expr="'@@@@@@ choiceVariable: ' + choiceVariable "/>
+				<log expr="'@@@@@@ audioBaseVariable: ' + audioBaseVariable "/>
+				<log expr="'@@@@@@ numberLocatorPHPScript: ' + numberLocatorPHPScript "/>
+				<log expr="'@@@@@@ grammarLocatorVariable: ' + grammarLocatorVariable "/>
+				<goto next="#frm_welcome"/>
+				
+				<!-- 	@@@@@@@		EXTENSION		@@@@@@ -->
+				<else/>
+					<log expr="'@@@@ TRANSFER TO EXTENSION'"/>
+					<assign name="grammarLocatorVariable" expr="'PostalCodeGrammar.xml'"/>
+					<assign name="audioBaseVariable" expr="'/leedsAudioFiles/'"/>
+					<assign name="numberLocatorPHPScript" expr="'fetchNumbers.php'"/>
+						<!-- Log Data -->
+					<log expr="'@@@@@@ choiceVariable: ' + choiceVariable "/>
+					<log expr="'@@@@@@ numberLocatorPHPScript: ' + numberLocatorPHPScript "/>
+					<goto next="#frm_transfer"/>
+			</if>
+		</block>
+	</form>
+
+	<form id="frm_welcome">
+		<block>
+			<prompt>
+				Welcome too  <value expr="choiceVariable"/> cab office
+			</prompt>
+			<!-- Move to the main form -->
+			<goto next="#getPostal"/>
+		</block>
+	</form>
+	<!--
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ Main Form, lets get us some input yeeee-haw!
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ -->
+	<form id="getPostal">
+		<!-- Load the grammar file -->
+		<grammar srcexpr="grammarLocatorVariable" type="application/grammar-xml" root="TOPLEVEL"/>
+		<initial name="postalCode">
+			<prompt>
+				please clearly say the first part of your postal code
+		      </prompt>
+		</initial>
+		<filled mode="all">
+			<log expr="'*** ALL FILLED ***'"/>
+			<log expr="'RESULT = ' + prefix + suffix"/>
+			<assign name="V1" expr="prefix"/>
+			<assign name="V2" expr="suffix"/>
+			<prompt>	I heard <value expr="V1"/> <value expr="V2"/></prompt>
+			<goto next="#confirmForm"/>
+		</filled>
+		<field name="prefix">
+			<prompt>Please give me the letter?</prompt>
+			<filled>
+				<prompt>I got <value expr="prefix"/></prompt>
+				<log expr="'*** PREFIX RESULT =' + prefix"/>
+				<assign name="V1" expr="prefix"/>
+			</filled>
+		</field>
+		<field name="suffix">
+			<prompt>Please give me the digit?</prompt>
+			<filled>
+				<prompt>I heard <value expr="suffix"/></prompt>
+				<log expr="'*** SUFFIX RESULT =' + suffix"/>
+				<assign name="V2" expr="suffix"/>
+			</filled>
+		</field>
+		<!-- All of the fields have been matched -->
+	</form>
+	<!--
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Lets confirm caller data
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+-->
+	<form id="confirmForm">
+		<field name="confirmValues">
+			<prompt>Is this correct?  Please say yes or no.</prompt>
+			<grammar src="builtin:grammar/boolean"/>
+			<grammar src="builtin:dtmf/boolean"/>
+			<filled>
+				<if cond="confirmValues == true">
+					<prompt>Fantastic</prompt>
+					<assign name="confirmedDataVariable" expr="V1+V2"/>
+					<goto next="#submitData"/>
+					<else/>
+					<prompt>Sorry we misunderstood you, lets try again</prompt>
+					<clear namelist="postalCode"/>
+					<goto next="#getPostal"/>
+				</if>
+			</filled>
+		</field>
+	</form>
+<!--
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Submitting me some data boss, 
+just submitting me some data
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+-->
+	<form id="submitData">
+		<block>
+			<data srcexpr="numberLocatorPHPScript" name="lookupData" namelist="confirmedDataVariable" ecmaxmltype="e4x"/>
+			<assign name="lookupResponse" expr="lookupData"/>
+			<assign name="lengthVar" expr="lookupResponse.record.length()"/>
+			<log expr="'@@@@@@[Number Of Records] ' + lengthVar"/>
+				<script>
+					var returnArray = new Array();
+						for(i=0; lengthVar&gt;i; i++){
+							returnArray[i] = new Array(2);
+							returnArray[i][0]=lookupResponse.record[i].company.toXMLString();
+							returnArray[i][1]=lookupResponse.record[i].number.toXMLString();
+						}
+				</script>
+			<assign name="returnedData" expr="lookupResponse.record.toString()"/>
+			<log expr="'@@@@@@[returnedData.toString()] ' + returnedData"/>
+
+		<log expr="'@@@@ returnArray[0][0]: ' + returnArray[0][0]"/>
+		<log expr="'@@@@ returnArray[0][1]: ' + returnArray[0][1]"/>		
+
+		
+			<if cond="returnedData == 'error'">
+				<!--
+				@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				If utterance is not in PHP script it will return error, we handle that here and reprompt
+				@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				-->
+				<prompt> I am sorry there seems to have been an error with this postal code <break/> please try again</prompt>
+				<clear namelist="postalCode"/>
+				<goto next="#getPostal"/>
+				<else/>
+				<!--
+				@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				Here is were we need to return data to CCXML Wrapper
+				@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				-->
+				<prompt>Might we ask that you please hold the line while we connect you</prompt>
+				<exit namelist="returnArray confirmedDataVariable"/>
+			</if>
+		</block>
+	</form>
+</vxml>

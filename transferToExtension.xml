@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="root.xml" version="2.1">
+	<form id="CallTransfer">
+		<block>
+			<log expr="'@@@@@@@@@[ NOW IN transferToExtension.xml ]@@@@@@@@@'"/>
+			<assign name="choiceVariable" expr="session.connection.ccxml.values.choiceVariable"/>
+			<assign name="extensionVar" expr="session.connection.ccxml.values.extensionVar"/>
+			<log expr="'@@@@@@[extensionVar] ' + extensionVar"/>
+			<log expr="'@@@@@@[choiceVariable] ' + choiceVariable"/>
+		</block>
+		<block>
+			<prompt>Please hole while we connect you</prompt>
+		</block>
+		<transfer name="MyCall" destexpr="extensionVar" bridge="true" connecttimeout="30s" maxtime="60s">
+			<grammar xmlns="http://www.w3.org/2001/06/grammar" xml:lang="en-US" mode="dtmf" root="MYRULE">
+				<rule id="MYRULE">
+					<one-of>
+						<item> 1 </item>
+					</one-of>
+				</rule>
+			</grammar>
+			<filled>
+				<if cond="MyCall == 'busy'">
+					<prompt>The lines are busy. Please try again later.</prompt>
+					<assign name="transferResult" expr="'busy'"/>
+					<log expr="'@@@@ [TRANSFER RESULT] = BUSY'"/>
+					<elseif cond="MyCall == 'noanswer'"/>
+					<prompt>No one is answering the line.</prompt>
+					<assign name="transferResult" expr="'noanswer'"/>
+					<log expr="'@@@@ [TRANSFER RESULT] = NO ANSWER'"/>
+					<elseif cond="MyCall == 'far_end_disconnect'"/>
+					<prompt>The called party has hung up. goodbye</prompt>
+					<assign name="transferResult" expr="'far_end_disconnect'"/>
+					<log expr="'@@@@ [TRANSFER RESULT] = FAR END DISCONNECT'"/>
+					<elseif cond="MyCall == 'near_end_disconnect'"/>
+					<prompt>You have pressed 1 to disconnect the transfer, we will not disconnect the call</prompt>
+					<assign name="transferResult" expr="'near_end_disconnect'"/>
+					<log expr="'@@@@ [TRANSFER RESULT] = NEAR END DISCONNECT'"/>
+					<elseif cond="MyCall == 'maxtime.disconnect'"/>
+					<prompt>Your call ran over the maxtime of sixty seconds,and the called party has been disconnected.</prompt>
+					<assign name="transferResult" expr="'maxtime.disconnect'"/>
+					<log expr="'@@@@ [TRANSFER RESULT] = MAX TIME DISCONNECT'"/>
+					<elseif cond="MyCall == 'unknown'"/>
+					<prompt>The call failed for an unknown reason.</prompt>
+					<assign name="transferResult" expr="'unknown'"/>
+					<log expr="'@@@@ [TRANSFER RESULT] = UNKNOWN'"/>
+				</if>
+				<!-- note that this shadow var is ONLY available if the call transfer completes -->
+				<!-- if the caller hangs up while the call transfer is in progress, then this will be 'undefined' -->
+				<!-- See "Transfer Shadow Variables" on how to use javascript to calculate duration in that case. -->
+				<if cond="MyCall$.duration=='unknown'">
+					<assign name="transferDurationVar" expr="'0.00'"/>
+					<else/>
+					<assign name="transferDurationVar" expr="MyCall$.duration"/>
+				</if>
+				<log expr="'@@@@@@[transferDurationVar] ' + transferDurationVar"/>
+				<exit namelist="transferDurationVar transferResult"/>
+			</filled>
+		</transfer>
+	</form>
+</vxml>

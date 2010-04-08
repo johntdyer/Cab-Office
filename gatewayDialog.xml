@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="root.xml" version="2.1">
+	<form id="gatewayForm">
+		
+		<catch event="connection.disconnect.hangup">
+			<assign name="callResultVar" expr="'INBOUND_HANGUP'"/>
+	    <exit namelist="callResultVar"/>
+	  </catch>
+	<!--
+		<block>
+		<assign name="choiceVariable" expr="'london'"/>
+		<assign name="callResultVar" expr="'GOT_VALID_POSTAL'"/>
+		<exit namelist="choiceVariable callResultVar extensionVar"/>
+		</block>
+-->
+<field name="gatewayField" type="digits?maxlength=1">
+	<property name="inputmode" value="dtmf"/>
+	
+			<goto next="#getExtension"/>
+			<prompt>
+				Please press 1 for London . Press 2 for leeds . If you want to dial an extension directly please press 9
+			</prompt>
+			<filled>
+				<if cond="gatewayField == '1'">
+						<assign name="choiceVariable" expr="'london'"/>
+						<log expr="'@@@@@ choiceVariable = ' + choiceVariable"/>
+					<elseif cond="gatewayField == '2'"/>
+						<assign name="choiceVariable" expr="'leeds'"/>
+						<log expr="'@@@@@ choiceVariable = ' + choiceVariable"/>
+					<elseif cond="gatewayField == '9'"/>
+						<assign name="choiceVariable" expr="'gotoExtension'"/>
+						<log expr="'@@@@@ choiceVariable = ' + choiceVariable"/>
+					</if>
+					<if cond="choiceVariable!='gotoExtension'">
+						<log expr="'@@@@: GOTO CONFIRM FIELD'"/>
+						<goto next="#confirm"/>
+						<else/>
+							<log expr="'@@@@: GOTO getExtension Feild'"/>
+						<goto next="#getExtension"/>
+					</if>
+			</filled>
+		</field>
+	</form>
+	<form id="getExtension">
+		<var name="counterVar" expr="0"/>
+		<property name="inputmodes" value="dtmf"/>
+		<field name="getExt" type="digits?minlength=3">
+			<prompt>Please key in your extension now, follow by the pound key</prompt>
+			<filled>
+				<!---->
+				<assign name="choiceVariable" expr="'gotoExtension'"/>
+				<!---->
+				<log expr="'@@@@@@[getExt] ' + getExt"/>
+				<data src="fetchNumbers.php" name="lookupData" namelist="getExt" ecmaxmltype="e4x"/>
+				<assign name="lookupResponse" expr="lookupData"/>
+						<assign name="extensionVar" expr="getString(lookupResponse.number.toXMLString())"/>
+				<if cond="extensionVar=='invalidExtension'">
+					<prompt>I am sorry but that is not a valid extension</prompt>
+					<clear namelist="getExt"/>
+					<assign name="counterVar" expr="counterVar = counterVar + 1"/>
+					<log expr="'@@@@@@[counterVar] ' + counterVar"/>
+					<reprompt/>
+						<if cond="counterVar&gt;=3">
+							<log expr="'@@@@: TOO MANY RETRYS, CALL DISCONNECTING'"/>
+							<prompt>Sorry to many bad attempts, we will now disconnect the call . please try again later</prompt>
+							
+							<assign name="callResultVar" expr="'MAX_RETRYS_EXCEEDED'"/>
+							<log expr="'@@@@@@EXITING'"/>
+							<log expr="'@@@@@@[callResultVar] ' + callResultVar"/>
+							<log expr="'@@@@@@[extensionVar] ' + extensionVar"/>
+							<log expr="'@@@@@@[callResultVar] ' + callResultVar"/>
+							<exit namelist="callResultVar extensionVar choiceVariable"/>
+						</if>
+						<else/>
+						<log expr="'@@@@ WE GOT A VALID EXTENSION @@@@ (WOOT WOOT!!!)'"/>
+						<assign name="callResultVar" expr="'GOT_VALID_EXTENSION'"/>
+						
+						<log expr="'@@@@@@EXITING'"/>
+						<log expr="'@@@@@@[callResultVar] ' + callResultVar"/>
+						<log expr="'@@@@@@[extensionVar] ' + extensionVar"/>
+						<log expr="'@@@@@@[callResultVar] ' + callResultVar"/>
+						<exit namelist="choiceVariable extensionVar callResultVar"/>
+				</if>
+			</filled>
+		</field>
+		</form>
+	<form id="confirm">
+		<property name="inputmode" value="dtmf voice"/>
+		
+		<field name="confirmField">
+			 <grammar src="builtin:grammar/boolean"/>
+			 <grammar src="builtin:dtmf/boolean"/>
+			<prompt>
+				I heard you ask for 
+				<value expr="choiceVariable"/> is this correct? Please say yes, or press one or say No, or press two
+			</prompt>
+			<filled>
+				<if cond="confirmField ==true">
+					<prompt>Fantastic</prompt>
+					<log expr="'@@@@@ Confirmed user choice'"/>
+					<log expr="'@@@@@ Exiting gatewayVXML.xml now'"/>
+					<assign name="callResultVar" expr="'GOT_VALID_POSTAL'"/>
+					<log expr="'@@@@@@EXITING'"/>
+					<log expr="'@@@@@@[callResultVar] ' + callResultVar"/>
+					<exit namelist="choiceVariable callResultVar"/>
+					<else/>
+					<log expr="'@@@@@ Incorrect interpretation, trying again'"/>
+					<clear namelist="gatewayField"/>
+					<goto next="#gatewayForm"/>
+				</if>
+			</filled>
+		</field>
+	</form>
+</vxml>

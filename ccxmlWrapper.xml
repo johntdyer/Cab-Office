@@ -1,0 +1,389 @@
+<?xml version="1.0"?>
+<ccxml xmlns:voxeo="http://community.voxeo.com/xmlns/ccxml" version="1.0">
+	<var name="stateVar" expr="'init'"/>
+	<var name="inbound_conn_id"/>
+	<var name="outbound_conn_id"/>
+	<var name="hold_dialog_id"/>
+
+<!-- Array counter var (arrays start at 0)-->
+	<var name="numberToDialIterator" expr="0"/>
+<!-- Number we are dialing -->	
+	<var name="callCounterVariable" expr="1"/>
+	
+	<var name="numberOfRecordsReturned"/>
+	<var name="dialog_active" expr="false"/>
+	<var name="returnArray"/>
+	<var name="choiceVariable" expr="null"/>
+
+	<var name="hangUpGuardVar"/>
+	
+	<var name="extensionVar" expr="null"/>
+	<var name="callResultVar" expr="''"/>	
+	<var name="sessionID" expr="session.id"/>
+	<var name="callerID"/>
+	<var name="calledID"/>
+	<var name="totalCallDurationVar"/>
+	<var name="transferDuration"/>
+	<var name="callStartTime"/>
+	<var name="postalCode" expr="'n/a'"/>
+	<var name="acceptedCall"/>
+	<var name="cabCompany" expr="'n/a'"/>
+	<var name="transferResult"/>
+	
+	<var name="currentCallCompany"/>
+	<var name="currentCallNumber"/>
+	
+	<script>
+			function getPhoneFromXML(num){
+				var myReturn;
+				var endString;
+				endString = num.indexOf("&lt;/number&gt;");
+				myReturn = num.substring(8,endString);
+				return myReturn;
+			}
+			function getNumberHeader(number){
+				var returnValue;
+				endString = number.indexOf("@10.");
+				returnValue = number.substring(5,endString);
+				return returnValue;
+			}
+			
+				function parseNumberFromSIPHeader(number){
+					var returnValue;
+					endString = number.indexOf("@10.");
+					startString = number.indexOf(":");
+					returnValue = number.substring(startString+1,endString);
+					return returnValue;
+				}
+			function getCompanyFromXML(num){
+					var myReturn;
+					var endString;
+					endString = num.indexOf("&lt;/company&gt;");
+					myReturn = num.substring(9,endString);
+					return myReturn;
+				}
+			function recordsLeft(i){
+				var num;
+				num = numberOfRecordsReturned - i;
+				return num;
+			}
+	</script>
+		
+	<eventprocessor statevariable="stateVar">
+		<!--
+		Cab office
+		Author:  John Dyer
+		Voxeo Corporation
+		jdyer@voxeo.com
+		-->
+		
+		<transition event="connection.alerting" state="init">
+			<log expr="'@'"/><log expr="'@@'"/><log expr="'@@@'"/><log expr="'@@@@'"/>
+				<log expr="'@@@@@@@ CABOFFICE Version 1.0 '"/>
+				<log expr="'@@@@@ CONNECTION ALERTING, ACCEPTING CALL'"/>
+				<assign name="callerID" expr="parseNumberFromSIPHeader(event$.connection.protocol.sip.headers.From)"/>
+				<assign name="calledID" expr="parseNumberFromSIPHeader(event$.connection.protocol.sip.headers.To)"/>
+				<log expr="'@@@@@@[callerID] ' + callerID"/>
+				<log expr="'@@@@@@[calledID] ' + calledID"/>
+				<log expr="'@@@@'"/><log expr="'@@@'"/><log expr="'@@'"/><log expr="'@'"/>
+			<assign name="stateVar" expr="'initialPhase'"/>
+			<!--@@@@ THIS WILL KILL THE APP IN 10 MINS @@@@-->
+			<accept/>
+		</transition>
+		
+		<transition event="connection.connected" state="initialPhase">
+			<log expr="'@@@@ INBOUND LEG CONNECTED - STARTING gatewayDialog (City Selection Portion) @@@@'"/>
+			<assign name="inbound_conn_id" expr="event$.connectionid"/>
+			
+
+			<dialogstart src="'gatewayDialog.xml'" connectionid="inbound_conn_id" type="'application/voicexml+xml'"/>
+		</transition>
+		
+		<transition event="dialog.exit" state="initialPhase">
+			<log expr="'@@@@ gatewayDialog.xml EXITED - starting mainInterface.xml'"/>
+				<assign name="choiceVariable" expr="event$.values.choiceVariable"/>
+				<assign name="extensionVar" expr="event$.values.extensionVar"/>
+				<assign name="callResultVar" expr="event$.values.callResultVar"/>
+				<log expr="'@@@@@@[callResultVar] ' + callResultVar"/>
+				<log expr="'@@@@@@[choiceVariable] ' + choiceVariable"/>
+				<log expr="'@@@@@@[extensionVar] ' + extensionVar"/>
+			<!--		<assign name="choiceVariable" expr="'london'"/>-->
+			<log expr="'@@@@@@: Returned Data: ' +  choiceVariable"/>
+			<if cond="choiceVariable!='gotoExtension'">
+					<assign name="stateVar" expr="'getPostal'"/>
+					<!-- @@@@ Start User Interface @@@@-->
+					<if cond="hangUpGuardVar!='INBOUND_HANGUP'">
+							<log expr="'@@@@@@ STARTING mainInterface.xml'"/>
+							<log expr="'@@@@@@[callResultVar] ' + callResultVar"/>
+							<dialogstart src="'mainInterface.xml'" connectionid="inbound_conn_id" namelist="choiceVariable" type="'application/voicexml+xml'"/>
+						<else/>
+							<!--
+							<send name="'USER.POST_CALL_CLEAN_UP'" target="session.id" targettype="'ccxml'" delay="'250ms'"/>
+							<log expr="'@@@@: SEND EVENT USER.CALL_CLEAN_UP'"/>
+							-->
+					</if>
+				<else/>
+					<assign name="stateVar" expr="'gotoExtension'"/>
+					<!--Set these to N/A since thy do not apply because we are transferring to an extension --> 
+					<assign name="postalCode" expr="'N/A'"/>
+					<assign name="cabCompany" expr="'N/A'"/>
+					
+
+					<log expr="'@@@@@@ TRANSFER CALLER TO EXTENSION'"/>
+					<log expr="'@@@@@@ STARTING transferToExtension.xml'"/>
+					<dialogstart src="'transferToExtension.xml'" connectionid="inbound_conn_id" namelist="choiceVariable extensionVar" type="'application/voicexml+xml'"/>
+			</if>
+		</transition>
+		
+		<transition event="dialog.exit" state="gotoExtension">
+			<assign name="transferDuration" expr="event$.values.transferDurationVar"/>
+			<assign name="transferResult" expr="event$.values.transferResult"/>
+			<log expr="'@@@@: _STATE_ [dialog.exit] _EVENT_ [gotoExtension]'"/>
+			<disconnect connectionid="inbound_conn_id"/>
+		</transition>
+				
+		<transition event="dialog.exit" state="getPostal">	
+				<log expr="'@@@@ mainInterface.XML EXITED - CREATING OUTBOUND CALL'"/>
+				<assign name="returnArray" expr="event$.values.returnArray"/>
+				<assign name="postalCode" expr="event$.values.confirmedDataVariable"/>
+				<!-- @@@@@@@@  RETURNED XML DATA FROM VXML @@@@@@@@-->
+				<assign name="numberOfRecordsReturned" expr="returnArray.length"/>
+				<log expr="'@@@@@ # Records Returned: [ ' + numberOfRecordsReturned + ' ]'"/>
+
+				<log expr="'@@@@ STARTING HOLD MUSIC DIALOG FOR INBOUND LEG @@@@'"/>
+				<dialogstart src="'hold_music.xml'" connectionid="inbound_conn_id" dialogid="hold_dialog_id"/>
+				<send name="'makeCall'" target="session.id" targettype="'ccxml'" delay="'250ms'"/>
+			</transition>
+		
+		<transition event="makeCall">
+			<log expr="'@@@@ CAUGHT EVENT [ makeCall ]'"/>
+			<log expr="'@@@@@@ Calling [ ' + (callCounterVariable) + ' of ' +numberOfRecordsReturned+ ' ]'"/>
+			<log expr="'@@@@: IF CONDITION  EVENT[MAKECALL]' + Number(callCounterVariable) + ' &lt; ' + Number(numberOfRecordsReturned)"/>
+			
+			<if cond="Number(callCounterVariable) &lt;= Number(numberOfRecordsReturned)">
+				<assign name="stateVar" expr="'outboundCall'"/>
+				
+				<assign name="currentCallCompany" expr="getCompanyFromXML(returnArray[numberToDialIterator][0])"/>
+				<assign name="currentCallNumber" expr="getPhoneFromXML(returnArray[numberToDialIterator][1])"/>
+				<assign name="cabCompany" expr="currentCallCompany"/>
+				<createcall dest="currentCallNumber" callerid="'2081234740'" timeout="'20s'" connectionid="outbound_conn_id"/>
+				<!-- 
+				After we fire off the call we increment counters accordingly 
+				-->
+				<assign name="numberToDialIterator" expr="numberToDialIterator+1"/>
+				<assign name="callCounterVariable" expr="callCounterVariable+1"/>
+				<log expr="'@@@@@@[callCounterVariable] ' + callCounterVariable"/>
+				<log expr="'@@@@@@[numberToDialIterator] ' + numberToDialIterator"/>
+			<else/>
+				<log expr="'@@@@ [EXCEPTION]: RAN OUT OF NUMBERS, ENDING CALL'"/>
+				<assign name="stateVar" expr="'preExit'"/>
+				<send name="'outOfNumbers'" target="session.id" targettype="'ccxml'" delay="'550ms'"/>
+				<log expr="'@@@@: SEND EVENT[outOfNumbers]'"/>
+			</if>
+		</transition>
+		
+		<transition event="outOfNumbers" state="preExit">
+				<log expr="'@@@@: TEAR DOWN HOLD DIALOG'"/>
+				<dialogterminate dialogid="hold_dialog_id"/>
+				<assign name="callResultVar" expr="'ran_out_of_numbers'"/>
+				<log expr="'@@@@ DELAY TO ENSURE DIALOG IS TORN DOWN'"/>
+		</transition>
+		
+		<transition event="dialog.exit" state="preExit">
+			<log expr="'@@@@[dialog.exit] state=preExit'"/>
+			<send name="'user.playGameOverdialog'" target="session.id" targettype="'ccxml'" delay="'250ms'"/>
+		</transition>
+					
+		<transition event="user.playGameOverdialog">
+			<log expr="'@@@@ PLAYING MESSAGE TO INBOUND CALLER TO NOTIFY IN GAME IS OVER'"/>
+			<dialogstart src="'null://?text=Sorry. We are unable to take your call at this time. Please try again later.&amp;termdigits=*'" type="'application/x-texttospeech'" connectionid="inbound_conn_id"/>
+			<assign name="stateVar" expr="'exit'"/>
+		</transition>
+		
+		<transition event="connection.progressing" state="outboundCall">
+			<log expr="'@@@@ OUTBOUND CALL CREATED - RINGING @@@@'"/>
+		</transition>
+		
+		<transition event="connection.connected" state="outboundCall">
+			<log expr="'@@@@ OUTBOUND CALL CONNECTED - STARTING ACCEPT DIALOG @@@@'"/>
+			<assign name="stateVar" expr="'outboundCallConnected'"/>
+			<assign name="callResultVar" expr="'contact_cab_company'"/>
+			<dialogstart src="'null://?termdigits=12&amp;text=You have a call from a client. Press 1 to accept or 2 to decline.'" type="'application/x-fetchdigits'" connectionid="outbound_conn_id"/>
+		</transition>
+
+			<transition event="dialog.started" state="outboundCallConnected">
+				<assign name="dialog_active" expr="true"/>
+				<log expr="'@@@@ OUTBOUND DIALOG ACTIVE'"/>
+			</transition>
+	
+		<transition event="dialog.exit" state="outboundCallConnected">
+			<log expr="'@@@@ EVENT: DIALOG.EXIT | State: outboundCallConnected' "/>
+				<if cond="event$.values.termdigit == 1">
+					<assign name="stateVar" expr="'bridgeCall'"/>
+					<log expr="'@@@@ CALL ACCEPTED - STOPPING HOLD MUSIC AND BRIDGING CALL @@@@'"/>
+					<assign name="acceptedCall" expr="currentCallCompany"/>
+				<if cond="dialog_active == true">
+						<log expr="'@@@@: TEAR DOWN DIALOG _ STATE[outboundCallConnected] | EVENT[dialog.exit]'"/>
+						<dialogterminate dialogid="hold_dialog_id"/>
+					<else/>
+						<send name="'user.bridge'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+				</if>
+			<else/>
+				<log expr="'@@@@ CALL REJECTED - NEED TO PICK ANOTHER NUMBER @@@@'"/>
+				<!-- @@@@ DISCONNECT OUTBOUND CALL @@@@ --> 					 
+					<log expr="'@@@@: DISCONNECTING OUTBOUND CALL TO [ ' + currentCallCompany + ' ] '"/>
+			  	<disconnect connectionid="outbound_conn_id"/>
+				<if cond="dialog_active == true">
+					<assign name="stateVar" expr="'reject'"/>
+					<send name="'call.rejected'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+				<else/>
+					<log expr="'@@@@ ELSE??'"/>
+			</if>
+		</if>
+		</transition>
+	
+		<transition event="call.rejected">
+			<log expr="'@@@@@@ IN EVENT [call.rejected]'"/>
+			<log expr="'@@@@@ [ ' + currentCallCompany + ' ] Rejected Call'"/>
+			<assign name="callResultVar" expr="currentCallCompany+'_REJECTED_CALL'"/>
+			
+			<log expr="'@@@@: IF CONDITION (call.rejected) ' + callCounterVariable + ' &lt;= ' + numberOfRecordsReturned"/>
+			<if cond="callCounterVariable &lt;= numberOfRecordsReturned">		
+					<log expr="'@@@@@ [ ' + recordsLeft(callCounterVariable) + ' ]  Numbers Left'"/>
+					<assign name="stateVar" expr="'outbound'"/>
+					<log expr="'@@@@SENDING EVENT [makeCall]'"/>					
+					<send name="'makeCall'" target="session.id" targettype="'ccxml'" delay="'250ms'"/>
+				<else/>
+					<assign name="stateVar" expr="'preExit'"/>
+					<send name="'outOfNumbers'" target="session.id" targettype="'ccxml'" delay="'550ms'"/>
+			</if>
+		</transition>
+		
+		<transition event="dialog.exit" state="bridgeCall">
+			<log expr="'@@@@ EVENT[ DIALOG.EXIT ] __ STATE [ BRIDGE ] @@@@"/>
+			<assign name="dialog_active" expr="false"/>
+			<log expr="'@@@@@@[dialog_active] ' + dialog_active"/>
+			<send name="'user.bridge'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+		</transition>
+		
+		<transition event="dialog.exit" state="reject">
+		  <log expr="'@@@@ EVENT[ DIALOG.EXIT ] __ STATE [ REJECT ] @@@@"/>	
+			<assign name="dialog_active" expr="false"/>
+			<log expr="'@@@@@@[dialog_active] ' + dialog_active"/>
+			<send name="'call.rejected'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+		</transition>
+		
+		<transition event="user.bridge">
+			<log expr="'@@@@@@ EVENT [USER.BRIDGE]'"/>
+			<log expr="'@@@@@@ JOINING INBOUND AND OUTBOUND'"/>
+			<join id1="inbound_conn_id" id2="outbound_conn_id"/>
+		</transition>	
+		
+		<transition event="dialog.exit" state="exit">
+			<log expr="'@@@@ PLAYED GAMEOVER DIALOG, DISCONNECT INBOUND CALLER'"/>
+			<disconnect connectionid="inbound_conn_id"/>
+		</transition>
+		
+		<transition event="dialog.exit">
+			<log expr="'@@@@ UNMATCHED DIALOG.EXIT @@@@'"/>
+			<assign name="dialog_active" expr="false"/>
+		</transition>
+		
+		<transition event="send.SUCCESSFUL"/>
+		
+		<transition event="connection.failed" state="outbound">
+			<log expr="'@@@@ OUTBOUND CALL LEG FAILED WITH REASON: SIP ' + event$._sipreason + ' ' + event$.reason + '@@@@'"/>
+			
+			<send name="'user.reject'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+		</transition>
+		
+		<transition event="connection.disconnected">
+			<log expr="'@@@@ SETTING ZOMBIE KILLER [2 mins]'"/>
+      <send name="'DIE_ZOMBIE_DIE'" target="session.id" delay="'120s'"/>
+			<if cond="event$.connectionid == inbound_conn_id">
+				<log expr="'@@@@ INBOUND CALLER DISCONNECTED @@@@'"/>
+					<assign name="totalCallDurationVar" expr="(event$._duration/1000).toFixed(2)"/>
+					<log expr="'@@@@@@[totalCallDurationVar] ' + totalCallDurationVar"/>
+					<assign name="hangUpGuardVar" expr="'INBOUND_HANGUP'"/>
+					<log expr="'@@@@@@[hangUpGuardVar] ' + hangUpGuardVar"/>
+					<log expr="'@@@@: SEND EVENT USER.CALL_CLEAN_UP'"/>
+					<send name="'USER.POST_CALL_CLEAN_UP'" target="session.id" targettype="'ccxml'" delay="'250ms'"/>
+					
+				<elseif cond="event$.connectionid == outbound_conn_id"/>
+					<log expr="'@'"/><log expr="'@@'"/><log expr="'@@@'"/><log expr="'@@@@'"/>
+					<log expr="'@@@@ OUTBOUND LEG DISCONNECTED @@@@'"/>
+					<log expr="' _COMPANY_ [' + currentCallCompany + ' ]'"/>
+					<log expr="' _NUMBER_ [' + currentCallNumber + ' ]'"/>
+					<log expr="'@@@@'"/><log expr="'@@@'"/><log expr="'@@'"/><log expr="'@'"/>
+					<send name="'call.rejected'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+				</if>
+		</transition>
+		
+		<transition event="disconnectOutbound">
+			<log expr="'@@@@ CAUGHT EVENT [disconnectOutbound]'"/>
+			<log expr="'@@@@ Disconnecting Outbound Leg' "/>
+			<disconnect/>
+		</transition>
+		
+		<transition event="error.*">
+			<log expr="'@@@@ ERROR: ' + event$.reason + ' @@@@'"/>
+			<!--
+			<voxeo:sendemail to="'ukcitizen@gma22il.com'" from="'support@caboffice.com'" type="'debug'" subject="'CCXML application error'" body="'An ' + event$.reason + ' occured in CabOffice application in state ' + state + ' from source ' + event$.eventsource + ' type ' + event$.eventsourcetype"/>
+			-->
+			<send name="'USER.POST_CALL_CLEAN_UP'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+		</transition>
+
+    <transition event="USER.GOODBYE" state="postCallCleanUp">
+			<log expr="'@'"/><log expr="'@@'"/><log expr="'@@@'"/><log expr="'@@@@'"/>
+			<log expr="'---------- POST CALL SEND COMPLETE ----------'"/>
+			<log expr="'@@@@'"/><log expr="'@@@'"/><log expr="'@@'"/><log expr="'@'"/>
+			<exit/>
+    </transition>
+
+    <transition event="error.fetch">
+			<assign name="callResultVar" expr="'ERROR_BAD_FETCH'"/>
+			<log expr="'@@@@: ERROR FETCH'"/>
+			<send name="'USER.POST_CALL_CLEAN_UP'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+		</transition>
+
+	    <transition event="USER.POST_CALL_CLEAN_UP">
+				<log expr="'@'"/>
+				<log expr="'@@'"/>
+				<log expr="'@@@'"/>
+				<log expr="'@@@@'"/>
+				<log expr="'USER.POST_CALL_CLEAN_UP CAUGHT'"/>
+				<log expr="'@@@@ SessionID 					[ ' + sessionID	+	' ]'"/>
+				<log expr="'@@@@ CallerID 					[ ' + callerID	+	' ]'"/>
+				<log expr="'@@@@ CalledID						[ ' + calledID	+	' ]'"/>
+				<log expr="'@@@@ Total Call Duration	[ ' + totalCallDurationVar	+	' ]'"/>
+				<log expr="'@@@@ Postal Code					[ ' + postalCode+' ]'"/>
+				<log expr="'@@@@ callResultVar				[ ' + callResultVar+' ]'"/>
+				<log expr="'@@@@ Cab Company 				[ ' + cabCompany+' ]'"/>
+				<log expr="'@@@@ Transfer Result			[ ' + transferResult+' ]'"/>
+				<log expr="'@@@@ Transfer Duration 	[ ' + transferDuration+' ]'"/>
+				<log expr="'@@@@'"/>
+				<log expr="'@@@'"/>
+				<log expr="'@@'"/>
+				<log expr="'@'"/>
+				<assign name="stateVar" expr="'postCallCleanUp'"/>
+				
+				<send target="'logCatcher.php'" name="'http.get'" delay="'250ms'" targettype="'basichttp'" namelist="
+					sessionID callerID calledID totalCallDurationVar 
+					callResultVar postalCode cabCompany 
+					transferResult transferDuration"/>
+	    </transition>
+	
+	    <transition event="send.SUCCESSFUL" state="postCallCleanUp">
+				<log expr="'@@@@: SEDNING USER.GOODBYE'"/>
+				<send name="'USER.GOODBYE'" target="session.id" targettype="'ccxml'" delay="'250ms'"/>
+		 </transition>
+	
+	    <transition event="DIE_ZOMBIE_DIE">
+				<log expr="'@@@@@ ZOMBIE KILLER'"/>
+				<assign name="callResultVar" expr="'ZOMBIE_KILLER_ENDED_CALL'"/>
+				<assign name="stateVar" expr="'postCallCleanUp'"/>
+				<send name="'user.goodBye'" target="session.id" targettype="'ccxml'" delay="'150ms'"/>
+	    </transition>
+	
+	</eventprocessor>
+</ccxml>

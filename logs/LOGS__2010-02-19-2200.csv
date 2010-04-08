@@ -1,0 +1,17 @@
+CONFIDENTIAL INFORMATION
+CabOffice CDR - 2200 GMT 2010
+
+Time Stamp (GMT),SessionID,CallerID,CalledID,Call Duration,Call Result,Postal Code,Cab Company,Transfer Result,Transfer Duration
+22:06:33,bc86e0615004688ce684c927d7525165,4074740214,4074597644,undefined,GOT_VALID_POSTAL,undefined,,undefined,undefined
+22:06:56,bc86e0615004688ce684c927d7525165,4074740214,4074597644,38.98,GOT_VALID_POSTAL,undefined,,undefined,undefined
+22:08:30,deb80c11e43dbaef3083f73447414137,4074740214,4074597644,91.06,ran_out_of_numbers,undefined,,undefined,undefined
+22:08:30,deb80c11e43dbaef3083f73447414137,4074740214,4074597644,91.06,ran_out_of_numbers,undefined,,undefined,undefined
+22:15:44,1e29a5b49f0d8e1a8b226a64512c2385,4074740214,4074597644,undefined,ran_out_of_numbers,E1,,undefined,undefined
+22:15:50,1e29a5b49f0d8e1a8b226a64512c2385,4074740214,4074597644,88.02,ran_out_of_numbers,E1,,undefined,undefined
+22:15:50,1e29a5b49f0d8e1a8b226a64512c2385,4074740214,4074597644,88.02,ran_out_of_numbers,E1,,undefined,undefined
+22:22:48,2678391d5eaa4b0672d433d1c71a8208,4074740214,4074597644,116.91,ran_out_of_numbers,E1,,undefined,undefined
+22:22:48,2678391d5eaa4b0672d433d1c71a8208,4074740214,4074597644,116.91,ran_out_of_numbers,E1,,undefined,undefined
+22:34:56,c0a7e9f300059c88caa434b1602fc505,4074740214,4074597644,undefined,GOT_VALID_POSTAL,n/a,,undefined,undefined
+22:35:37,c0a7e9f300059c88caa434b1602fc505,4074740214,4074597644,58.25,GOT_VALID_POSTAL,n/a,,undefined,undefined
+22:35:51,0d73c184358591f032f011befae426a2,4074740214,4074597644,10.09,,n/a,,undefined,undefined
+22:41:52,0c262722db669ef6dd46f81ea072c0ce,4074740214,4074597644,148.20,ran_out_of_numbers,E1,,undefined,undefined

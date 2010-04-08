@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<vxml xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="root.xml" version="2.1">
+	<!-- generic hold music VXML - this will loop the specified audio file below  -->
+	<form id="Hold_Music">
+		<block>
+			<prompt>
+				<audio expr="hold_music"/>
+			</prompt>
+		</block>
+		<field>
+			<property name="timeout" value="150ms"/>
+			<grammar type="text/gsl">
+       [ aorgaoiengoaeingoaeinvaoeinrvoea ]
+     </grammar>
+			<catch event="nomatch noinput">
+				<goto next="#Hold_Music"/>
+			</catch>
+			<filled>
+				<goto next="#Hold_Music"/>
+			</filled>
+		</field>
+	</form>
+</vxml>
