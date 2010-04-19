@@ -1,0 +1,270 @@
+<?xml version="1.0"?>
+<text>
+	<item>  Head District              <tag>EC1</tag></item>
+	<item>  Bishopsgate                 <tag>EC2</tag></item>
+	<item>  Fenchurch Street            <tag>EC3</tag></item>
+	<item>  Fleet Street                <tag>EC4  </tag></item>
+	<item>  Head District               <tag>WC1  </tag></item>
+	<item>  Strand and Covent Garden      <tag>WC2  </tag></item>
+	<item> Head District (Islington)    <tag>N1   </tag></item>
+	<item> East Finchley                <tag>N2   </tag></item>
+	<item> Finchley                     <tag>N3   </tag></item>
+	<item> Finsbury Park                <tag>N4   </tag></item>
+	<item> Highbury                     <tag>N5   </tag></item>
+	<item> Highgate                     <tag>N6   </tag></item>
+	<item> Holloway                     <tag>N7   </tag></item>
+	<item> Hornsey                      <tag>N8   </tag></item>
+	<item> Lower Edmonton               <tag>N9   </tag></item>
+	<item>  Muswell Hill                <tag>N10  </tag></item>
+	<item>  New Southgate               <tag>N11  </tag></item>
+	<item>  North Finchley              <tag>N12  </tag></item>
+	<item>  Palmers Green               <tag>N13  </tag></item>
+	<item>  Southgate                   <tag>N14  </tag></item>
+	<item>  South Tottenham             <tag>N15  </tag></item>
+	<item>  Stoke Newington             <tag>N16  </tag></item>
+	<item>  Tottenham                   <tag>N17  </tag></item>
+	<item>  Upper Edmonton              <tag>N18  </tag></item>
+	<item>  Upper Holloway              <tag>N19  </tag></item>
+	<item>  Whetstone                   <tag>N20  </tag></item>
+	<item>  Winchmore Hill              <tag>N21  </tag></item>
+	<item>  Wood Green                  <tag>N22  </tag></item>
+	<item>  Head District               <tag>NW1  </tag></item>
+	<item>  Cricklewood                 <tag>NW2  </tag></item>
+	<item>  Hampstead                   <tag>NW3  </tag></item>
+	<item>  Hendon                      <tag>NW4  </tag></item>
+	<item>  Kentish Town                <tag>NW5  </tag></item>
+	<item>  Kilburn                     <tag>NW6  </tag></item>
+	<item>  Mill Hill                   <tag>NW7  </tag></item>
+	<item>  St John's Wood              <tag>NW8  </tag></item>
+	<item>  The Hyde                    <tag>NW9  </tag></item>
+	<item>   Willesden                  <tag>NW10 </tag></item>
+	<item>   Golders Green              <tag>NW11 </tag></item>
+	<item> Head District                <tag>E1   </tag></item>
+	<item> Bethnal Green                <tag>E2   </tag></item>
+	<item> Bow                          <tag>E3   </tag></item>
+	<item> Chingford                    <tag>E4   </tag></item>
+	<item> Clapton                      <tag>E5   </tag></item>
+	<item> East Ham                     <tag>E6   </tag></item>
+	<item> Forest Gate                  <tag>E7   </tag></item>
+	<item> Hackney                      <tag>E8   </tag></item>
+	<item> Homerton                     <tag>E9   </tag></item>
+	<item>  Leyton                      <tag>E10  </tag></item>
+	<item>  Leytonstone                 <tag>E11  </tag></item>
+	<item>  Manor Park                  <tag>E12  </tag></item>
+	<item>  Plaistow                    <tag>E13  </tag></item>
+	<item>  Poplar                      <tag>E14  </tag></item>
+	<item>  Stratford                   <tag>E15  </tag></item>
+	<item>  Victoria Dock               <tag>E16  </tag></item>
+	<item>  Walthamstow                 <tag>E17  </tag></item>
+	<item>  South Woodford              <tag>E18  </tag></item>
+	<item> Head District                <tag>W1   </tag></item>
+	<item> Paddington                   <tag>W2   </tag></item>
+	<item> Acton                        <tag>W3   </tag></item>
+	<item> Chiswick                     <tag>W4   </tag></item>
+	<item> Ealing                       <tag>W5   </tag></item>
+	<item> Hammersmith                  <tag>W6   </tag></item>
+	<item> Hanwell                      <tag>W7   </tag></item>
+	<item> Kensington                   <tag>W8   </tag></item>
+	<item> Maida Vale                   <tag>W9   </tag></item>
+	<item>  North Kensington            <tag>W10  </tag></item>
+	<item>  Notting Hill                <tag>W11  </tag></item>
+	<item>  Shepherds Bush              <tag>W12  </tag></item>
+	<item>  West Ealing                 <tag>W13  </tag></item>
+	<item>  West Kensington             <tag>W14  </tag></item>
+	<item>  Head District               <tag>SE1  </tag></item>
+	<item>  Abbey Wood                  <tag>SE2  </tag></item>
+	<item>  Blackheath                  <tag>SE3  </tag></item>
+	<item>  Brockley                    <tag>SE4  </tag></item>
+	<item>  Camberwell                  <tag>SE5  </tag></item>
+	<item>  Catford                     <tag>SE6  </tag></item>
+	<item>  Charlton                    <tag>SE7  </tag></item>
+	<item>  Deptford                    <tag>SE8  </tag></item>
+	<item>  Eltham                      <tag>SE9  </tag></item>
+	<item>   Greenwich                  <tag>SE10 </tag></item>
+	<item>   Kennington                 <tag>SE11 </tag></item>
+	<item>   Lee                        <tag>SE12 </tag></item>
+	<item>   Lewisham                   <tag>SE13 </tag></item>
+	<item>   New Cross                  <tag>SE14 </tag></item>
+	<item>   Peckham                    <tag>SE15 </tag></item>
+	<item>   Rotherhithe                <tag>SE16 </tag></item>
+	<item>   Walworth                   <tag>SE17 </tag></item>
+	<item>   Woolwich                   <tag>SE18 </tag></item>
+	<item>   Upper Norwood              <tag>SE19 </tag></item>
+	<item>   Anerley                    <tag>SE20 </tag></item>
+	<item>   Dulwich                    <tag>SE21 </tag></item>
+	<item>   East Dulwich               <tag>SE22 </tag></item>
+	<item>   Forest Hill                <tag>SE23 </tag></item>
+	<item>   Herne Hill                 <tag>SE24 </tag></item>
+	<item>   South Norwood              <tag>SE25 </tag></item>
+	<item>   Sydenham                   <tag>SE26 </tag></item>
+	<item>   West Norwood               <tag>SE27 </tag></item>
+	<item>   Thamesmead                 <tag>SE28 </tag></item>
+	<item>  Head District               <tag>SW1  </tag></item>
+	<item>  Brixton                     <tag>SW2  </tag></item>
+	<item>  Chelsea                     <tag>SW3  </tag></item>
+	<item>  Clapham                     <tag>SW4  </tag></item>
+	<item>  Earls Court                 <tag>SW5  </tag></item>
+	<item>  Fulham                      <tag>SW6  </tag></item>
+	<item>  South Kensington            <tag>SW7  </tag></item>
+	<item>  South Lambeth               <tag>SW8  </tag></item>
+	<item>  Stockwell                   <tag>SW9  </tag></item>
+	<item>   West Brompton              <tag>SW10 </tag></item>
+	<item>   Battersea                  <tag>SW11 </tag></item>
+	<item>   Balham                     <tag>SW12 </tag></item>
+	<item>   Barnes                     <tag>SW13 </tag></item>
+	<item>   Mortlake                   <tag>SW14 </tag></item>
+	<item>   Putney                     <tag>SW15 </tag></item>
+	<item>   Streatham                  <tag>SW16 </tag></item>
+	<item>   Tooting                    <tag>SW17 </tag></item>
+	<item>   Wandsworth                 <tag>SW18 </tag></item>
+	<item>   Wimbledon                  <tag>SW19 </tag></item>
+	<item>   West Wimbledon             <tag>SW20 </tag></item>
+	<item>  Bromley                     <tag>BR1  </tag></item>
+	<item>  Keston                      <tag>BR2  </tag></item>
+	<item>  Beckenham                   <tag>BR3  </tag></item>
+	<item>  West Wickham                <tag>BR4  </tag></item>
+	<item>  St Mary Cray                <tag>BR5  </tag></item>
+	<item>  Orpington                   <tag>BR6  </tag></item>
+	<item>  Chislehurst                 <tag>BR7  </tag></item>
+	<item>  Swanley                     <tag>BR8  </tag></item>
+	<item>  Croydon                     <tag>CR0  </tag></item>
+	<item>  South Croydon               <tag>CR2  </tag></item>
+	<item>  Caterham                    <tag>CR3  </tag></item>
+	<item>  Mitcham                     <tag>CR4  </tag></item>
+	<item>  Coulsdon                    <tag>CR5  </tag></item>
+	<item>  Warlingham                  <tag>CR6  </tag></item>
+	<item>  Thornton Heath              <tag>CR7  </tag></item>
+	<item>  Purley                      <tag>CR8  </tag></item>
+	<item>  Croydon (Large Users)       <tag>CR9  </tag></item>
+	<item>  Dartford                    <tag>DA1  </tag></item>
+	<item>  Dartford                    <tag>DA2  </tag></item>
+	<item>  Longfield                   <tag>DA3  </tag></item>
+	<item>  Dartford                    <tag>DA4  </tag></item>
+	<item>  Bexley                      <tag>DA5  </tag></item>
+	<item>  Bexleyheath                 <tag>DA6  </tag></item>
+	<item>  Barnehurst                  <tag>DA7  </tag></item>
+	<item>  Erith                       <tag>DA8  </tag></item>
+	<item>  Greenhithe                  <tag>DA9  </tag></item>
+	<item>   Swanscombe                 <tag>DA10 </tag></item>
+	<item>   Northfleet                 <tag>DA11 </tag></item>
+	<item>   Gravesend                  <tag>DA12 </tag></item>
+	<item>   Meopham                    <tag>DA13 </tag></item>
+	<item>   Sidcup                     <tag>DA14 </tag></item>
+	<item>   Blackfen                   <tag>DA15 </tag></item>
+	<item>   Welling                    <tag>DA16 </tag></item>
+	<item>   Belvedere                  <tag>DA17 </tag></item>
+	<item>   Erith Marshes              <tag>DA18 </tag></item>
+	<item>  Enfield                     <tag>EN1  </tag></item>
+	<item>  Enfield Town                <tag>EN2  </tag></item>
+	<item>  Ponders End                 <tag>EN3  </tag></item>
+	<item>  Barnet                      <tag>EN4  </tag></item>
+	<item>  Arkley                      <tag>EN5  </tag></item>
+	<item>  Potters Bar                 <tag>EN6  </tag></item>
+	<item>  Cheshunt                    <tag>EN7  </tag></item>
+	<item>  Waltham Cross               <tag>EN8  </tag></item>
+	<item>  Waltham Abbey               <tag>EN9  </tag></item>
+	<item>   Broxbourne                 <tag>EN10 </tag></item>
+	<item>   Hoddesdon                  <tag>EN11 </tag></item>
+	<item>  Wembley                     <tag>HA0  </tag></item>
+	<item>  Harrow                      <tag>HA1  </tag></item>
+	<item>  Harrow                      <tag>HA2  </tag></item>
+	<item>  Wealdstone                  <tag>HA3  </tag></item>
+	<item>  Ruislip                     <tag>HA4  </tag></item>
+	<item>  Pinner                      <tag>HA5  </tag></item>
+	<item>  Northwood                   <tag>HA6  </tag></item>
+	<item>  Stanmore                    <tag>HA7  </tag></item>
+	<item>  Edgware                     <tag>HA8  </tag></item>
+	<item>  Wembley                     <tag>HA9  </tag></item>
+	<item>  Ilford                      <tag>IG1  </tag></item>
+	<item>  Gants Hill                  <tag>IG2  </tag></item>
+	<item>  Seven Kings                 <tag>IG3  </tag></item>
+	<item>  Redbridge                   <tag>IG4  </tag></item>
+	<item>  Clayhall                    <tag>IG5  </tag></item>
+	<item>  Barkingside                 <tag>IG6  </tag></item>
+	<item>  Chigwell                    <tag>IG7  </tag></item>
+	<item>  Woodford Green              <tag>IG8  </tag></item>
+	<item>  Buckhurst Hill              <tag>IG9  </tag></item>
+	<item>   Loughton                   <tag>IG10 </tag></item>
+	<item>   Barking                    <tag>IG11 </tag></item>
+	<item>  Kingston Upon Thames        <tag>KT1  </tag></item>
+	<item>  Norbiton                    <tag>KT2  </tag></item>
+	<item>  New Malden                  <tag>KT3  </tag></item>
+	<item>  Worcester Park              <tag>KT4  </tag></item>
+	<item>  Berrylands                  <tag>KT5  </tag></item>
+	<item>  Surbiton                    <tag>KT6  </tag></item>
+	<item>  Thames Ditton               <tag>KT7  </tag></item>
+	<item>  East Molesey                <tag>KT8  </tag></item>
+	<item>  Chessington                 <tag>KT9  </tag></item>
+	<item>   Esher                      <tag>KT10 </tag></item>
+	<item>   Cobham                     <tag>KT11 </tag></item>
+	<item>   Walton-On-Thames           <tag>KT12 </tag></item>
+	<item>   Weybridge                  <tag>KT13 </tag></item>
+	<item>   Byfleet                    <tag>KT14 </tag></item>
+	<item>   Addlestone                 <tag>KT15 </tag></item>
+	<item>   Chertsey                   <tag>KT16 </tag></item>
+	<item>   Epsom                      <tag>KT17 </tag></item>
+	<item>   Headley                    <tag>KT18 </tag></item>
+	<item>   Horton                     <tag>KT19 </tag></item>
+	<item>   Tadworth                   <tag>KT20 </tag></item>
+	<item>   Ashtead                    <tag>KT21 </tag></item>
+	<item>   Leatherhead                <tag>KT22 </tag></item>
+	<item>   The Bookhams               <tag>KT23 </tag></item>
+	<item>   Effingham                  <tag>KT24 </tag></item>
+	<item>  Romford                     <tag>RM1  </tag></item>
+	<item>  Gidea Park                  <tag>RM2  </tag></item>
+	<item>  Harold Wood                 <tag>RM3  </tag></item>
+	<item>  Havering-Atte-Bower         <tag>RM4  </tag></item>
+	<item>  Collier Row                 <tag>RM5  </tag></item>
+	<item>  Chadwell Heath              <tag>RM6  </tag></item>
+	<item>  Rush Green                  <tag>RM7  </tag></item>
+	<item>  Becontree Heath             <tag>RM8  </tag></item>
+	<item>  Becontree                   <tag>RM9  </tag></item>
+	<item>   Dagenham<tag>RM10 </tag></item>
+	<item>   Hornchurch<tag>RM11 </tag></item>
+	<item>   Elm Park                   <tag>RM12 </tag></item>
+	<item>   Rainham                    <tag>RM13 </tag></item>
+	<item>   Upminster                  <tag>RM14 </tag></item>
+	<item>   South Ockendon             <tag>RM15 </tag></item>
+	<item>   Chafford Hundred           <tag>RM16 </tag></item>
+	<item>   Grays                      <tag>RM17 </tag></item>
+	<item>   Tilbury                    <tag>RM18 </tag></item>
+	<item>   Purfleet                   <tag>RM19 </tag></item>
+	<item>   West Thurrock              <tag>RM20 </tag></item>
+	<item>  Sutton                      <tag>SM1  </tag></item>
+	<item>  Belmont                     <tag>SM2  </tag></item>
+	<item>  Cheam                       <tag>SM3  </tag></item>
+	<item>  Morden                      <tag>SM4  </tag></item>
+	<item>  Carshalton                  <tag>SM5  </tag></item>
+	<item>  Wallington                  <tag>SM6  </tag></item>
+	<item>  Banstead                    <tag>SM7  </tag></item>
+	<item>  Twickenham                  <tag>TW1  </tag></item>
+	<item>  Whitton                     <tag>TW2  </tag></item>
+	<item>  Hounslow                    <tag>TW3  </tag></item>
+	<item>  Hounslow                    <tag>TW4  </tag></item>
+	<item>  Heston                      <tag>TW5  </tag></item>
+	<item>  Heathrow                    <tag>TW6  </tag></item>
+	<item>  Isleworth                   <tag>TW7  </tag></item>
+	<item>  Brentford                   <tag>TW8  </tag></item>
+	<item>  Richmond-Upon-Thames        <tag>TW9  </tag></item>
+	<item>   Ham                        <tag>TW10 </tag></item>
+	<item>   Teddington                 <tag>TW11 </tag></item>
+	<item>   Hampton                    <tag>TW12 </tag></item>
+	<item>   Feltham                    <tag>TW13 </tag></item>
+	<item>   Hatton                     <tag>TW14 </tag></item>
+	<item>   Ashford                    <tag>TW15 </tag></item>
+	<item>   Sunbury-On-Thames          <tag>TW16 </tag></item>
+	<item>   Shepperton                 <tag>TW17 </tag></item>
+	<item>   Staines                    <tag>TW18 </tag></item>
+	<item>   Stanwell                   <tag>TW19 </tag></item>
+	<item>   Egham                      <tag>TW20 </tag></item>
+	<item>  Southall                    <tag>UB1  </tag></item>
+	<item>  Norwood Green               <tag>UB2  </tag></item>
+	<item>  Hayes                       <tag>UB3  </tag></item>
+	<item>  Yeading                     <tag>UB4  </tag></item>
+	<item>  Northolt                    <tag>UB5  </tag></item>
+	<item>  Greenford                   <tag>UB6  </tag></item>
+	<item>  West Drayton                <tag>UB7  </tag></item>
+	<item>Uxbridge                    <tag>UB8  </tag></item>
+	<item>Denham<tag>UB9  </tag></item>
+	<item>Hillingdon<tag>UB10</tag></item>
+</text>
