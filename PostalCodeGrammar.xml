@@ -39,12 +39,18 @@
 		<one-of>
 			<item>
 				<one-of>
-					<item>n </item>
-					<item>en </item>
-					<item>north </item>
-					<item>northern </item>
+					<item> c</item>
+					<item> sea </item>
+					<item> see </item>
 				</one-of>
-				<tag>out.prefix = "N";</tag>
+				<tag>out.prefix = "C";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item> d</item>
+					<item> dee</item>
+				</one-of>
+				<tag>out.prefix = "D";</tag>
 			</item>
 			<item>
 				<one-of>
@@ -58,13 +64,45 @@
 			</item>
 			<item>
 				<one-of>
-					<item>W </item>
-					<item>west </item>
-					<item>western</item>
-					<item>double u</item>
-					<item>double you </item>
+					<item> h</item>
+					<item> henry </item>
+					<item> hilo </item>
 				</one-of>
-				<tag>out.prefix = "W";</tag>
+				<tag>out.prefix = "H";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item> I</item>
+					<item> eye </item>
+					<item> indigo </item>
+				</one-of>
+				<tag>out.prefix = "I";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item> k</item>
+					<item> ka</item>
+					<item> kay </item>
+					<item> kilo </item>
+				</one-of>
+				<tag>out.prefix = "K";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item>n </item>
+					<item>en </item>
+					<item>north </item>
+					<item>northern </item>
+				</one-of>
+				<tag>out.prefix = "N";</tag>
+			</item>
+			<item>
+				<one-of>
+					<item> r</item>
+					<item> are </item>
+					<item> romeo </item>
+				</one-of>
+				<tag>out.prefix = "R";</tag>
 			</item>
 			<item>
 				<one-of>
@@ -76,21 +114,26 @@
 				</one-of>
 				<tag>out.prefix = "S";</tag>
 			</item>
-			
 			<item>
 				<one-of>
-					<item> c</item>
-					<item> sea </item>
-					<item> see </item>
+					<item> T</item>
+					<item> tea</item>
+					<item> tango </item>
+					<item> tee</item>
 				</one-of>
-
-				<tag>out.prefix = "C";</tag>
+				<tag>out.prefix = "T";</tag>
 			</item>
-			
-			
-			
+			<item>
+				<one-of>
+					<item>W </item>
+					<item>west </item>
+					<item>western</item>
+					<item>double u</item>
+					<item>double you </item>
+				</one-of>
+				<tag>out.prefix = "W";</tag>
+			</item>
 			<!-- To Add a letter you will want to copy this section -->
-			
 			<!--
 			
 			<item>
