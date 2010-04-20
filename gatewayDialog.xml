@@ -13,11 +13,10 @@
 		<exit namelist="choiceVariable callResultVar extensionVar"/>
 		</block>
 -->
-<field name="gatewayField" type="digits?maxlength=1">
-	<property name="inputmode" value="dtmf"/>
-	
+<field name="gatewayField" type="digits?length=1">
+	<property name="inputmode" value="dtmf"/>	
 			<goto next="#getExtension"/>
-			<prompt>
+			<prompt bargein="true">
 				Please press 1 for London . Press 2 for leeds . If you want to dial an extension directly please press 9
 			</prompt>
 			<filled>
