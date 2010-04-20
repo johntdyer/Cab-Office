@@ -1,7 +1,24 @@
 <?
+/*
+{
+      "source":"beanstalkapp",  // identifier of the payload, in case you consume JSON from many vendors.
+      "author":"author username",  // username of the author 
+      "author_name": "John Doe", // full name of the author
+      "author_email": "user@example.com", // email of the author          
+      "revision":5, // revision to which the deployment updated
+      "comment":"example", // commit message
+      "server":"development", // server to which data was deployed 
+      "repository":"beanstalk", // repository from which deploy happened
+      "repository_url":"https://example.svn.beanstalk.com/example", // source control url of the repository
+      "deployed_at":"2010/02/16 15:45:20 +0000" // time when deployment happened - timezone is included.
+}
+*/
 $myFile = 'json.txt';
 $intialPayload = json_decode(@file_get_contents('php://input'));
 $source = $intialPayload->{'source'};
+fwrite($fh,"intialPayload: " . $intialPayload . "\n");
+fwrite($fh,"source: " . $source . "\n");
+exit;
 
 if($source=="beanstalkapp"){
 	$fh = fopen($myFile, 'a');
