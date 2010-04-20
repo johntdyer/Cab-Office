@@ -2,7 +2,7 @@
 $myFile = 'json.txt';
 $intialPayload = json_decode(@file_get_contents('php://input'));
 $source = $intialPayload->{'source'};
-if($source=="beanstalkapp")
+if($source=="beanstalkapp"){
 	$fh = fopen($myFile, 'a');
 	fwrite($fh,"source: " . $source . "\n");
 	exit;
