@@ -6,7 +6,6 @@ $source = $intialPayload->{'source'};
 if($source=="beanstalkapp"){
 	$fh = fopen($myFile, 'a');
 	fwrite($fh,"intialPayload: " . $intialPayload . "\n");
-	
 	fwrite($fh,"source: " . $source . "\n");
 	exit;
 }else{
