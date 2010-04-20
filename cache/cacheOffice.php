@@ -16,6 +16,8 @@
 $myFile = 'json.txt';
 $intialPayload = json_decode(@file_get_contents('php://input'));
 $source = $intialPayload->{'source'};
+$fh = fopen($myFile, 'a');
+
 fwrite($fh,"intialPayload: " . $intialPayload . "\n");
 fwrite($fh,"source: " . $source . "\n\n");
 exit;
